@@ -1,5 +1,7 @@
 # bananastand
 
+![There's always money in the banana stand](assets/theres-always-money-in-the-banana-stand.gif)
+
 > There's always money in the banana stand.
 
 bananastand detects your RAM and drives, prices them against live listings

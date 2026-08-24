@@ -1,0 +1,31 @@
+# Push a tag like v0.1.0 and this workflow builds the binaries, writes
+# SHA256SUMS, and attaches everything to a GitHub release — which is
+# exactly what install.sh downloads.
+name: release
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+      - name: Test
+        run: go test ./...
+      - name: Build
+        run: |
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o bananastand-linux-amd64 .
+          CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o bananastand-linux-arm64 .
+          sha256sum bananastand-linux-amd64 bananastand-linux-arm64 > SHA256SUMS
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            bananastand-linux-amd64
+            bananastand-linux-arm64
+            SHA256SUMS

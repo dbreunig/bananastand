@@ -1,0 +1,10 @@
+# built binaries
+bananastand
+bananastand-linux-*
+SHA256SUMS
+
+# macOS
+.DS_Store
+
+# source snapshot (GitHub generates release archives)
+bananastand-*-src.tar.gz
